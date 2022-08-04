@@ -1,12 +1,33 @@
 import * as React from "react"
+import { Provider } from "react-redux"
+
 import { render, RenderOptions } from "@testing-library/react"
-import { ChakraProvider, theme } from "@chakra-ui/react"
 
-const AllProviders = ({ children }: { children?: React.ReactNode }) => (
-  <ChakraProvider theme={theme}>{children}</ChakraProvider>
-)
+import { AppStore, RootState, setupStore } from "./app/store"
 
-const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
-  render(ui, { wrapper: AllProviders, ...options })
+import type { PreloadedState } from "@reduxjs/toolkit"
+interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+  preloadedState?: PreloadedState<RootState>
+  store?: AppStore
+}
 
-export { customRender as render }
+export function renderWithProviders(
+  ui: React.ReactElement,
+  {
+    preloadedState = {},
+    // Automatically create a store instance if no store was passed in
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+  function Wrapper({ children }: React.PropsWithChildren<{}>): JSX.Element {
+    return <Provider store={store}>{children}</Provider>
+  }
+  return {
+    store,
+    ...render(ui, { wrapper: Wrapper, ...renderOptions }),
+  }
+}
+
+// re-export everything
+export * from "@testing-library/react"
