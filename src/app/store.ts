@@ -21,14 +21,3 @@ export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
 export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof setupStore>
 export type AppDispatch = AppStore["dispatch"]
-
-// export type AppStore = ReturnType<typeof setupStore>
-// export type State = ReturnType<Reducer>
-// export type RootState = ReturnType<typeof reducer>
-// export type AppDispatch = AppStore["dispatch"]
-// export type AppThunk<ReturnType = void> = ThunkAction<
-//   ReturnType,
-//   State,
-//   unknown,
-//   Action<string>
-// >
