@@ -17,6 +17,7 @@ type TransactionsTableColumns = {
   investAmt: number
   amount: number
 }
+
 const trimmedData: TransactionsTableColumns[] = data.map((entry) => {
   const {
     date,
